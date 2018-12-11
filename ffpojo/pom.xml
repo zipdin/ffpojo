@@ -3,12 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-		<groupId>com.github.ffpojo</groupId>
+		<groupId>com.zandero.ffpojo</groupId>
 		<artifactId>ffpojo-parent</artifactId>
-		<version>1.1-SNAPSHOT</version>
+		<version>1.1</version>
 	</parent>
 	
-	<artifactId>ffpojo</artifactId>
+	<artifactId>ffpojo-core</artifactId>
 	<packaging>jar</packaging>
 	
 	<name>FFPOJO :: Core Project</name>
