@@ -23,7 +23,7 @@ public class InternalBooleanDecorator extends ExtendedFieldDecorator<Boolean>{
 	/**
 	 *
 	 * @param field
-	 * @return
+	 * @return TODO
 	 * @throws FieldDecoratorException
 	 */
 	public String toString(Boolean field) throws FieldDecoratorException {
@@ -37,7 +37,7 @@ public class InternalBooleanDecorator extends ExtendedFieldDecorator<Boolean>{
 	/**
 	 *
 	 * @param field
-	 * @return
+	 * @return TODO
 	 * @throws FieldDecoratorException
 	 */
 	public Boolean fromString(String field) throws FieldDecoratorException {
@@ -47,7 +47,7 @@ public class InternalBooleanDecorator extends ExtendedFieldDecorator<Boolean>{
 
 	/**
 	 *
-	 * @return
+	 * @return TODO
 	 */
 	public static Class<?>[] getTypesConstructorExtended(){
 		return new Class[]{String.class, String.class};
@@ -55,7 +55,7 @@ public class InternalBooleanDecorator extends ExtendedFieldDecorator<Boolean>{
 	
 	/**
 	 * Return the methods names in annotation that contains the values to call the constructor
-	 * @return
+	 * @return TODO
 	 */
 	public static String[] getMethodContainsContstructorValues(){
 		return new String[]{"trueIdentifier", "falseIdentifier"};
@@ -63,7 +63,7 @@ public class InternalBooleanDecorator extends ExtendedFieldDecorator<Boolean>{
 	
 	/**
 	 * Return the Annotation linked with the decoration
-	 * @return
+	 * @return TODO
 	 */
 	public static Class<? extends Annotation> annotationLinked(){
 		return Annotation.class;

@@ -16,10 +16,10 @@ The FFPOJO library can work to positional and delimited flat-files, and provides
 
 ### Starting Points ###
 
-* [Releases](https://github.com/ffpojo/ffpojo/tags)
+* [Releases](https://github.com/zandero/ffpojo/tags)
 * [Getting Started](#getting-started)
 * [Samples](#samples)
-* [XML Schema](https://github.com/ffpojo/ffpojo/blob/master/readme-ffpojo-ofm.xsd)
+* [XML Schema](https://github.com/zandero/ffpojo/blob/master/readme-ffpojo-ofm.xsd)
 
 ---
 
