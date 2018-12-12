@@ -6,7 +6,7 @@ import com.zandero.ffpojo.FFPojoHelper;
 import com.zandero.ffpojo.exception.RecordParserException;
 import com.zandero.ffpojo.parser.RecordParser;
 
-abstract class BaseFlatFileReader implements FlatFileReader {
+public abstract class BaseFlatFileReader implements FlatFileReader {
 	
 	protected FlatFileReaderDefinition flatFileDefinition;
 

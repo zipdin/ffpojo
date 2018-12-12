@@ -17,22 +17,24 @@ public class FlatFileReaderDefinition {
 	private Class<?> body;
 	private Class<?> header;
 	private Class<?> trailer;
-	
+
+	private String charset;
+
 	@Deprecated
 	private RecordParser bodyParser;
+
 	@Deprecated
 	private RecordParser headerParser;
 	@Deprecated
 	private RecordParser trailerParser;
-	
 	private Map<IdentifierLine, Class<?>> definitions =  new HashMap<IdentifierLine, Class<?>>();;
+
 	private IdentifierLine idLine;
-	
 	@SuppressWarnings("rawtypes")
 	public FlatFileReaderDefinition(Class bodyClass){
 		this(Arrays.asList(bodyClass));
 	}
-	
+
 	@SuppressWarnings({ "rawtypes"})
 	public FlatFileReaderDefinition(Collection<Class> bodyClasses) {
 		if (bodyClasses == null || bodyClasses.isEmpty()) {
@@ -40,7 +42,7 @@ public class FlatFileReaderDefinition {
 		}
 		createMapDefinitions(bodyClasses);
 	}
-	
+
 	@SuppressWarnings("rawtypes")
 	private void createMapDefinitions(Collection<Class> bodyClasses){
 		for (Class<?> bodyClass : bodyClasses) {
@@ -55,7 +57,7 @@ public class FlatFileReaderDefinition {
 			}
 		}
 	}
-	
+
 	public void setHeader(Class<?> header) throws FFPojoException {
 		this.header = header;
 		if (header == null) {
@@ -64,7 +66,7 @@ public class FlatFileReaderDefinition {
 			this.headerParser = ffpojoHelper.getRecordParser(header);
 		}
 	}
-	
+
 	public void setTrailer(Class<?> trailer) throws FFPojoException {
 		this.trailer = trailer;
 		if (trailer == null) {
@@ -73,12 +75,15 @@ public class FlatFileReaderDefinition {
 			this.trailerParser = ffpojoHelper.getRecordParser(trailer);
 		}
 	}
-	
-	// GETTERS AND SETTERS
 
+
+	// GETTERS AND SETTERS
 	public Class<?> getBody(String message) {
+
 		final Set<IdentifierLine> identifierLines = this.definitions.keySet();
+
 		final IdentifierLine messageId =  new IdentifierLine();
+
 		for(IdentifierLine id : identifierLines){
 			final Map<Integer, String> mapIds = id.getMapIds();
 			final Set<Integer> keys = mapIds.keySet();
@@ -91,7 +96,8 @@ public class FlatFileReaderDefinition {
 				}
 				messageId.putId(startPosition, message.substring(startPosition, finalPosition));
 			}
-			if (id.equals(messageId)){
+
+			if (id.equals(messageId)) {
 				this.body = this.definitions.get(messageId);
 				break;
 			}else{
@@ -118,23 +124,35 @@ public class FlatFileReaderDefinition {
 	public Class<?> getBody() {
 		return body;
 	}
+
 	public Class<?> getHeader() {
 		return header;
 	}
+
 	public Class<?> getTrailer() {
 		return trailer;
 	}
-	
+
 	@Deprecated
 	public RecordParser getBodyParser() {
 		return bodyParser;
 	}
+
 	@Deprecated
 	public RecordParser getHeaderParser() {
 		return headerParser;
 	}
+
 	@Deprecated
 	public RecordParser getTrailerParser() {
 		return trailerParser;
+	}
+
+	public String getCharset() {
+		return charset;
+	}
+
+	public void setCharset(String charset) {
+		this.charset = charset;
 	}
 }
