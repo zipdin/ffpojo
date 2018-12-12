@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.NoSuchElementException;
 
-abstract class InputFilteringStreamFlatFileReader extends BaseFlatFileReader implements FlatFileReader {
+public abstract class InputFilteringStreamFlatFileReader extends BaseFlatFileReader implements FlatFileReader {
 
 	private static final boolean IS_RESET_SUPPORTED = false;
 
@@ -85,5 +85,5 @@ abstract class InputFilteringStreamFlatFileReader extends BaseFlatFileReader imp
 		throw new NoSuchElementException("There are no more records to read");
 	}
 
-	abstract boolean accept(String line);
+	public abstract boolean accept(String line);
 }
