@@ -58,7 +58,7 @@ public class InputStreamFlatFileReader extends BaseFlatFileReader implements Fla
 		}
 	}
 	
-	public Object next() {	
+	/*public Object next() {
 		if (!this.hasNext()) {
 			throw new NoSuchElementException("There are no more records to read");
 		}
@@ -74,6 +74,41 @@ public class InputStreamFlatFileReader extends BaseFlatFileReader implements Fla
 		} catch (RecordParserException e) {
 			throw new RuntimeException("Error while parsing from text the line number " + (recordIndex + 1), e);
 		}
+	}*/
+
+	public Object next() {
+
+		while (this.hasNext()) {
+
+			String currLine = nextLine;
+			try {
+				nextLine = inputStreamReader.readLine();
+			}
+			catch (IOException e) {
+				throw new RuntimeException("Error while decoding the line number " + (recordIndex + 1), e);
+			}
+			catch (RecordParserException e) {
+				throw new RuntimeException("Error while parsing from text the line number " + (recordIndex + 1), e);
+			}
+
+			if (accept(currLine)) {
+
+				Object record = parseRecordFromText(currLine);
+				this.recordText = nextLine;
+				recordIndex++;
+				return record;
+			}
+		}
+
+		throw new NoSuchElementException("There are no more records to read");
 	}
 
+	/**
+	 * Override to perform line filtering if desired
+	 * @param line to be filtered
+	 * @return true OK, false to skip
+	 */
+	public boolean accept(String line) {
+		return true;
+	}
 }
