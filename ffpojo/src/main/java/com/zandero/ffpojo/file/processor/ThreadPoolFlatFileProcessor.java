@@ -1,8 +1,6 @@
 package com.zandero.ffpojo.file.processor;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
+import com.zandero.ffpojo.exception.FFPojoException;
 import com.zandero.ffpojo.exception.RecordProcessorException;
 import com.zandero.ffpojo.file.processor.record.RecordProcessor;
 import com.zandero.ffpojo.file.processor.record.event.DefaultRecordEvent;
@@ -10,22 +8,29 @@ import com.zandero.ffpojo.file.processor.record.event.RecordEvent;
 import com.zandero.ffpojo.file.reader.FlatFileReader;
 import com.zandero.ffpojo.file.reader.RecordType;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class ThreadPoolFlatFileProcessor extends BaseFlatFileProcessor implements FlatFileProcessor {
 
 	private ExecutorService executor;
-	
-	public ThreadPoolFlatFileProcessor(FlatFileReader flatFileReader, int threadPoolSize) {
+	private long timeOut;
+	private TimeUnit unit;
+
+	public ThreadPoolFlatFileProcessor(FlatFileReader flatFileReader, int threadPoolSize, long timeOut, TimeUnit unit) {
 		super(flatFileReader);
+		this.timeOut = timeOut;
+		this.unit = unit;
 		this.executor = Executors.newFixedThreadPool(threadPoolSize);
 	}
-	
+
 	public void processFlatFile(final RecordProcessor processor) {
-		for(final Object record : flatFileReader) {
-			final RecordType recordType = flatFileReader.getRecordType();
-			final RecordEvent event = new DefaultRecordEvent(record, flatFileReader.getRecordText(), flatFileReader.getRecordIndex());
-			executor.execute(new Runnable() {
-				public void run() {
+		try {
+			for (final Object record : flatFileReader) {
+				final RecordType recordType = flatFileReader.getRecordType();
+				final RecordEvent event = new DefaultRecordEvent(record, flatFileReader.getRecordText(), flatFileReader.getRecordIndex());
+				executor.execute(() -> {
 					try {
 						if (recordType == RecordType.HEADER) {
 							processor.processHeader(event);
@@ -41,13 +46,19 @@ public class ThreadPoolFlatFileProcessor extends BaseFlatFileProcessor implement
 							exThrownByErrorHandler.printStackTrace();
 						}
 					}
-				}
-			});
-		}
-		executor.shutdown();
-		while(!executor.isTerminated()) {
-			Thread.yield();
+				});
+			}
+			executor.shutdown();
+			if (!executor.awaitTermination(timeOut, unit)) {
+				throw new Exception("Thread pool timeout while reading from stream.");
+			}
+			endOfFileHandler.readComplete(flatFileReader.getRecordIndex());
+		} catch (FFPojoException e) {
+			errorHandler.error(e);
+			processFlatFile(processor);
+		} catch (Exception e) {
+			errorHandler.error(new RecordProcessorException(e));
+			processFlatFile(processor);
 		}
 	}
-	
 }

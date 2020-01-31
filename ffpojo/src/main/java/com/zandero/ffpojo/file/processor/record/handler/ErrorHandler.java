@@ -1,9 +1,9 @@
 package com.zandero.ffpojo.file.processor.record.handler;
 
-import com.zandero.ffpojo.exception.RecordProcessorException;
+import com.zandero.ffpojo.exception.FFPojoException;
 
 public interface ErrorHandler {
 
-	public void error(RecordProcessorException exception) throws RecordProcessorException;
-	
+	void error(FFPojoException exception) throws FFPojoException;
+
 }

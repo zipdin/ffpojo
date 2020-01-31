@@ -3,26 +3,24 @@ package com.zandero.ffpojo.file.reader;
 import java.io.IOException;
 import java.util.Iterator;
 
-
-
 public interface FlatFileReader extends Iterator<Object>, Iterable<Object> {
 
-	public void reset() throws IOException;
-	public void close() throws IOException;
-	public boolean isResetSupported();
-	public boolean isClosed();
+	void reset() throws IOException;
+	void close() throws IOException;
+	boolean isResetSupported();
+	boolean isClosed();
 
-	public RecordType getRecordType();
-	public String getRecordText();
-	public long getRecordIndex();
-	
+	RecordType getRecordType();
+	String getRecordText();
+	long getRecordIndex();
+
 	// Iterator
-	public boolean hasNext();	
-	public Object next();
+	boolean hasNext();
+	Object next();
 	@Deprecated
-	public void remove();
-	
+	void remove();
+
 	// Iterable
-	public Iterator<Object> iterator();
-	
+	Iterator<Object> iterator();
+
 }
