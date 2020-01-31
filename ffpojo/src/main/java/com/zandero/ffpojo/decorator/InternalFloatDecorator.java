@@ -2,6 +2,7 @@ package com.zandero.ffpojo.decorator;
 
 import com.zandero.ffpojo.decorator.util.FloatPointDecoratorUtil;
 import com.zandero.ffpojo.metadata.extra.ExtendedFieldDecorator;
+import com.zandero.ffpojo.util.StringUtil;
 
 public class InternalFloatDecorator extends ExtendedFieldDecorator<Float>{
 
@@ -25,6 +26,7 @@ public class InternalFloatDecorator extends ExtendedFieldDecorator<Float>{
 	}
 
 	public Float fromString(String value){
+		if (StringUtil.isNullOrEmpty(value)) return null;
 		return floatPointDecoratorUtil.fromString(value).floatValue();
 	}
 

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import com.zandero.ffpojo.decorator.util.FloatPointDecoratorUtil;
 import com.zandero.ffpojo.metadata.extra.ExtendedFieldDecorator;
+import com.zandero.ffpojo.util.StringUtil;
 
 public class InternalBigDecimalDecorator extends ExtendedFieldDecorator<BigDecimal> {
  
@@ -27,6 +28,7 @@ public class InternalBigDecimalDecorator extends ExtendedFieldDecorator<BigDecim
 	}
 
 	public BigDecimal fromString(String value){
+		if (StringUtil.isNullOrEmpty(value)) return null;
 		return floatPointDecoratorUtil.fromString(value);
 	}
 
