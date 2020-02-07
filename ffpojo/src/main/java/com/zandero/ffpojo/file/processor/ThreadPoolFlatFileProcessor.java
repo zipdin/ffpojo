@@ -1,5 +1,9 @@
 package com.zandero.ffpojo.file.processor;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import com.zandero.ffpojo.exception.FFPojoException;
 import com.zandero.ffpojo.exception.RecordProcessorException;
 import com.zandero.ffpojo.file.processor.record.RecordProcessor;
@@ -7,10 +11,6 @@ import com.zandero.ffpojo.file.processor.record.event.DefaultRecordEvent;
 import com.zandero.ffpojo.file.processor.record.event.RecordEvent;
 import com.zandero.ffpojo.file.reader.FlatFileReader;
 import com.zandero.ffpojo.file.reader.RecordType;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class ThreadPoolFlatFileProcessor extends BaseFlatFileProcessor implements FlatFileProcessor {
 
@@ -54,10 +54,17 @@ public class ThreadPoolFlatFileProcessor extends BaseFlatFileProcessor implement
 			}
 			endOfFileHandler.readComplete(flatFileReader.getRecordIndex());
 		} catch (FFPojoException e) {
+			e.setLine(flatFileReader.getRecordText());
+			e.setLineNumber(flatFileReader.getRecordIndex());
+
 			errorHandler.error(e);
 			processFlatFile(processor);
 		} catch (Exception e) {
-			errorHandler.error(new RecordProcessorException(e));
+			RecordProcessorException recordProcessorException = new RecordProcessorException(e);
+			recordProcessorException.setLine(flatFileReader.getRecordText());
+			recordProcessorException.setLineNumber(flatFileReader.getRecordIndex());
+
+			errorHandler.error(recordProcessorException);
 			processFlatFile(processor);
 		}
 	}
